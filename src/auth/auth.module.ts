@@ -1,19 +1,33 @@
 import { Module } from '@nestjs/common';
 import { AuthController } from './auth.controller';
 import { TypegooseModule } from 'nestjs-typegoose';
-import { AuthModel } from './auth.model';
+import { UserModel } from './user.model';
+import { AuthService } from './auth.service';
+import { JwtModule } from '@nestjs/jwt';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { getJWTConfig } from './jwt.config';
+import { PassportModule } from '@nestjs/passport';
+import { JwtStrategy } from './strategies/jwt.strategy';
 
 @Module({
   imports: [
+    ConfigModule,
     TypegooseModule.forFeature([
       {
-        typegooseClass: AuthModel,
+        typegooseClass: UserModel,
         schemaOptions: {
-          collection: 'Auth',
+          collection: 'User',
         },
       },
     ]),
+    JwtModule.registerAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: getJWTConfig,
+    }),
+    PassportModule,
   ],
   controllers: [AuthController],
+  providers: [AuthService, JwtStrategy],
 })
 export class AuthModule {}

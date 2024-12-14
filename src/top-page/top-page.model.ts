@@ -1,4 +1,4 @@
-import { prop } from '@typegoose/typegoose';
+import { prop, index } from '@typegoose/typegoose';
 import { Base, TimeStamps } from '@typegoose/typegoose/lib/defaultClasses';
 
 export enum TopLevelCategory {
@@ -31,6 +31,11 @@ class TopPageAdvantage {
 
 export interface TopPageModel extends Base {}
 
+@index({
+  title: 'text',
+  seoText: 'text',
+})
+// @index({ '$**': 'text' }) - generates text indices for all fields in the model
 export class TopPageModel extends TimeStamps {
   @prop({ enum: TopLevelCategory })
   firstCategory: TopLevelCategory;
@@ -41,6 +46,8 @@ export class TopPageModel extends TimeStamps {
   @prop({ unique: true })
   alias: string;
 
+  // prop({ text: true }) - text index for mongodb
+  // only one text index would be available
   @prop()
   title: string;
 
@@ -61,4 +68,8 @@ export class TopPageModel extends TimeStamps {
 
   @prop({ type: () => [String] })
   tags: string[];
+}
+
+export interface TopPageSearchQueryParams {
+  search: string;
 }

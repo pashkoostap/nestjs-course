@@ -20,5 +20,6 @@ import { TopPageService } from './top-page.service';
   ],
   controllers: [TopPageController],
   providers: [TopPageService],
+  exports: [TopPageService],
 })
 export class TopPageModule {}

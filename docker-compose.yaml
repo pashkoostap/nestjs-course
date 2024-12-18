@@ -1,9 +1,19 @@
 version: '3'
 services:
+  # api:
+  #   build: .
+  #   container_name: 'api'
+  #   restart: unless-stopped
+  #   ports:
+  #     - 3000:3000
+  #   volumes:
+  #     - ./.env:/app/.env
+  #   depends_on:
+  #     - mongo
   mongo:
     image: mongo
     container_name: mongo
-    restart: always
+    restart: unless-stopped
     environment:
       - MONGO_INITDB_ROOT_USERNAME=admin
       - MONGO_INITDB_ROOT_PASSWORD=admin

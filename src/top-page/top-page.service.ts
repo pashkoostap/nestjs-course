@@ -63,4 +63,8 @@ export class TopPageService {
       },
     });
   }
+
+  async findAllPages() {
+    return this.topPageModel.find({}).exec();
+  }
 }
